@@ -56,6 +56,7 @@ type ProduceResponse struct {
 	Blocks       map[string]map[int32]*ProduceResponseBlock
 	Version      int16
 	ThrottleTime time.Duration // only provided if Version >= 1
+	StartOffset  int64         // only provided if Version >= 5
 }
 
 func (r *ProduceResponse) decode(pd packetDecoder, version int16) (err error) {
@@ -92,6 +93,13 @@ func (r *ProduceResponse) decode(pd packetDecoder, version int16) (err error) {
 				return err
 			}
 			r.Blocks[name][id] = block
+		}
+	}
+
+	if version >= 5 {
+		r.StartOffset, err = pd.getInt64()
+		if err != nil {
+			return err
 		}
 	}
 
@@ -141,19 +149,6 @@ func (r *ProduceResponse) key() int16 {
 
 func (r *ProduceResponse) version() int16 {
 	return r.Version
-}
-
-func (r *ProduceResponse) requiredVersion() KafkaVersion {
-	switch r.Version {
-	case 1:
-		return V0_9_0_0
-	case 2:
-		return V0_10_0_0
-	case 3:
-		return V0_11_0_0
-	default:
-		return MinVersion
-	}
 }
 
 func (r *ProduceResponse) GetBlock(topic string, partition int32) *ProduceResponseBlock {
