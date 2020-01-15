@@ -821,7 +821,6 @@ func TestListConsumerGroups(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
 }
 
 func TestListConsumerGroupsMultiBroker(t *testing.T) {
@@ -886,7 +885,6 @@ func TestListConsumerGroupsMultiBroker(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
 }
 
 func TestListConsumerGroupOffsets(t *testing.T) {
@@ -915,7 +913,7 @@ func TestListConsumerGroupOffsets(t *testing.T) {
 	}
 
 	response, err := admin.ListConsumerGroupOffsets(group, map[string][]int32{
-		topic: []int32{0},
+		topic: {0},
 	})
 	if err != nil {
 		t.Fatalf("ListConsumerGroupOffsets failed with error %v", err)
@@ -934,7 +932,6 @@ func TestListConsumerGroupOffsets(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
 }
 
 func TestDeleteConsumerGroup(t *testing.T) {
@@ -964,5 +961,4 @@ func TestDeleteConsumerGroup(t *testing.T) {
 	if err != nil {
 		t.Fatalf("DeleteConsumerGroup failed with error %v", err)
 	}
-
 }

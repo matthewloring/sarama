@@ -281,7 +281,6 @@ func (r *FetchResponse) encode(pe packetEncoder) (err error) {
 				return err
 			}
 		}
-
 	}
 	return nil
 }

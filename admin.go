@@ -133,7 +133,6 @@ func (ca *clusterAdmin) Controller() (*Broker, error) {
 }
 
 func (ca *clusterAdmin) CreateTopic(topic string, detail *TopicDetail, validateOnly bool) error {
-
 	if topic == "" {
 		return ErrInvalidTopic
 	}
@@ -308,7 +307,6 @@ func (ca *clusterAdmin) ListTopics() (map[string]TopicDetail, error) {
 }
 
 func (ca *clusterAdmin) DeleteTopic(topic string) error {
-
 	if topic == "" {
 		return ErrInvalidTopic
 	}
@@ -379,7 +377,6 @@ func (ca *clusterAdmin) CreatePartitions(topic string, count int32, assignment [
 }
 
 func (ca *clusterAdmin) DeleteRecords(topic string, partitionOffsets map[int32]int64) error {
-
 	if topic == "" {
 		return ErrInvalidTopic
 	}
@@ -433,7 +430,6 @@ func (ca *clusterAdmin) DeleteRecords(topic string, partitionOffsets map[int32]i
 }
 
 func (ca *clusterAdmin) DescribeConfig(resource ConfigResource) ([]ConfigEntry, error) {
-
 	var entries []ConfigEntry
 	var resources []*ConfigResource
 	resources = append(resources, &resource)
@@ -466,7 +462,6 @@ func (ca *clusterAdmin) DescribeConfig(resource ConfigResource) ([]ConfigEntry, 
 }
 
 func (ca *clusterAdmin) AlterConfig(resourceType ConfigResourceType, name string, entries map[string]*string, validateOnly bool) error {
-
 	var resources []*AlterConfigsResource
 	resources = append(resources, &AlterConfigsResource{
 		Type:          resourceType,
@@ -518,7 +513,6 @@ func (ca *clusterAdmin) CreateACL(resource Resource, acl Acl) error {
 }
 
 func (ca *clusterAdmin) ListAcls(filter AclFilter) ([]ResourceAcls, error) {
-
 	request := &DescribeAclsRequest{AclFilter: filter}
 
 	if ca.conf.Version.IsAtLeast(V2_0_0_0) {
@@ -566,7 +560,6 @@ func (ca *clusterAdmin) DeleteACL(filter AclFilter, validateOnly bool) ([]Matchi
 		for _, mACL := range fr.MatchingAcls {
 			mAcls = append(mAcls, *mACL)
 		}
-
 	}
 	return mAcls, nil
 }
@@ -580,7 +573,6 @@ func (ca *clusterAdmin) DescribeConsumerGroups(groups []string) (result []*Group
 			return nil, err
 		}
 		groupsPerBroker[controller] = append(groupsPerBroker[controller], group)
-
 	}
 
 	for broker, brokerGroups := range groupsPerBroker {
@@ -623,7 +615,6 @@ func (ca *clusterAdmin) ListConsumerGroups() (allGroups map[string]string, err e
 			}
 
 			groupMaps <- groups
-
 		}(b, ca.conf)
 	}
 
