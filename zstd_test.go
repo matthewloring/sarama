@@ -5,39 +5,25 @@ import (
 )
 
 func TestSaramaZSTD(t *testing.T) {
-	kafkaVersion := V2_1_0_0
 	cfg := NewConfig()
-
 	cfg.ClientID = "sarama-zstd-test"
-
 	cfg.Producer.Return.Errors = true
 	cfg.Producer.Return.Successes = true
 	cfg.Producer.Retry.Max = 0
-
-	cfg.Version = kafkaVersion
-
-	if err := cfg.Validate(); err != nil {
-		t.Fatalf("configuration validation failed: %v", err)
-	}
-
 	cfg.Producer.Compression = CompressionZSTD
+	cfg.Version = V2_1_0_0
 
-	producer, err := NewAsyncProducer([]string{"localhost:9092"}, cfg)
+	producer, err := NewSyncProducer([]string{"localhost:9092"}, cfg)
 	if err != nil {
-		t.Fatalf("NewAsyncProducer failed: %v", err)
+		t.Fatalf("NewSyncProducer failed: %v", err)
 	}
-
-	producer.Input() <- &ProducerMessage{
-		Topic: "sarama-test",
-		Value: StringEncoder("hello world!"),
+	_, _, err = producer.SendMessage(
+		&ProducerMessage{
+			Topic: "my-topic",
+			Value: StringEncoder("hello world!"),
+		})
+	if err != nil {
+		t.Errorf("TEST:   sending message failed: %v\n", err)
 	}
-
-	select {
-	case <-producer.Successes():
-		Logger.Println("TEST:   sending compressed zstd message was successful")
-	case err := <-producer.Errors():
-		t.Errorf("TEST:   sending message failed: %v\n", err.Err)
-	}
-
-	producer.AsyncClose()
+	_ = producer.Close()
 }
