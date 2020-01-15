@@ -44,7 +44,5 @@ func TestSaramaZSTD(t *testing.T) {
 		t.Errorf("TEST:   sending message failed: %v\n", err.Err)
 	}
 
-	if err := producer.Close(); err != nil {
-		t.Errorf("producer.Close failed: %v", err)
-	}
+	producer.AsyncClose()
 }

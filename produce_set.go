@@ -3,7 +3,6 @@ package sarama
 import (
 	"encoding/binary"
 	"errors"
-	"fmt"
 	"time"
 )
 
@@ -130,11 +129,7 @@ func (ps *produceSet) buildRequest() *ProduceRequest {
 		req.Version = 3
 	}
 
-	// from https://github.com/Shopify/sarama/pull/1443
-	// TODO: check for Version cases between 4-6 inclusive.
-	// No protocol changes are introduced to the request, but the response changes.
 	if ps.parent.conf.Producer.Compression == CompressionZSTD && ps.parent.conf.Version.IsAtLeast(V2_1_0_0) {
-		fmt.Println(">>> produce_set.go buildRequest() set req.Version = 7 with compression zstd")
 		req.Version = 7
 	}
 
