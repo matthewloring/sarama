@@ -94,7 +94,6 @@ func (b *RecordBatch) encode(pe packetEncoder) error {
 
 	if err := pe.pop(); err != nil {
 		return err
-	} else {
 	}
 	return pe.pop()
 }
@@ -204,9 +203,6 @@ func (b *RecordBatch) encodeRecords(pe packetEncoder) error {
 	b.recordsLen = len(raw)
 
 	b.compressedRecords, err = compress(b.Codec, b.CompressionLevel, raw)
-	if err != nil {
-	} else {
-	}
 	return err
 }
 
