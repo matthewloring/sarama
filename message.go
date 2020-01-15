@@ -86,8 +86,10 @@ func (m *Message) encode(pe packetEncoder) error {
 		m.compressedCache = nil
 	} else if m.Value != nil {
 
+		Logger.Println(">>> message.go compressing message on encode")
 		payload, err = compress(m.Codec, m.CompressionLevel, m.Value)
 		if err != nil {
+			Logger.Println(">>> message.go err compressing message on encode", err)
 			return err
 		}
 		m.compressedCache = payload

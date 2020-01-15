@@ -64,6 +64,7 @@ func decode(buf []byte, in decoder) error {
 	}
 
 	if helper.off != len(buf) {
+		Logger.Printf(">>> encoder_decoder.go on decode, helper.off != len(buf), off: %#v, len:%#v\n", helper.off, len(buf))
 		return PacketDecodingError{"invalid length"}
 	}
 
@@ -76,12 +77,16 @@ func versionedDecode(buf []byte, in versionedDecoder, version int16) error {
 	}
 
 	helper := realDecoder{raw: buf}
+	Logger.Printf(">>> encoder_decoder.go on versionedDecode, realDecoder, version: %#v\n", version)
 	err := in.decode(&helper, version)
 	if err != nil {
+		Logger.Printf(">>> encoder_decoder.go on versionedDecode, err, version: %#v\n", err, version)
 		return err
 	}
 
+	Logger.Printf(">>> encoder_decoder.go helper.off != len(buf), off: %#v, len: %#v, version: %#v\n", helper.off, len(buf), version)
 	if helper.off != len(buf) {
+		Logger.Println(">>> encoder_decoder.go on versionedDecode, version", version)
 		return PacketDecodingError{"invalid length"}
 	}
 

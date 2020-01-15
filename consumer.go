@@ -888,6 +888,16 @@ func (bc *brokerConsumer) fetchNewMessages() (*FetchResponse, error) {
 		request.Isolation = bc.consumer.conf.Consumer.IsolationLevel
 	}
 
+	// from https://github.com/Shopify/sarama/pull/1443
+	// TODO: verify that versions 5-9 didn't introduce breaking change.
+	// v9 introduces FETCH_REQUEST_TOPIC_V9,
+	// v7 introduces FORGOTTEN_TOPIC_DATA_V7, SESSION_ID, & SESSION_EPOCH, and
+	// v5 introduces TOPICS_V5 (subsumed by FETCH_REQUEST_TOPIC_V9).
+	// There also may be response level changes.
+	if bc.consumer.conf.Version.IsAtLeast(V2_1_0_0) {
+		request.Version = 10
+	}
+
 	for child := range bc.subscriptions {
 		request.AddBlock(child.topic, child.partition, child.offset, child.fetchSize)
 	}

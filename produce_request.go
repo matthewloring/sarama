@@ -214,6 +214,9 @@ func (r *ProduceRequest) requiredVersion() KafkaVersion {
 		return V0_10_0_0
 	case 3:
 		return V0_11_0_0
+	case 7:
+		Logger.Println(">>> produce_request.go requiredVersion r.Version", r.Version)
+		return V2_1_0_0
 	default:
 		return MinVersion
 	}
