@@ -1,16 +1,11 @@
 package sarama
 
 import (
-	"fmt"
-	"log"
-	"os"
 	"testing"
 )
 
 func TestSaramaZSTD(t *testing.T) {
 	kafkaVersion := V2_1_0_0
-	Logger = log.New(os.Stdout, "", 0)
-
 	cfg := NewConfig()
 
 	cfg.ClientID = "sarama-zstd-test"
@@ -39,7 +34,7 @@ func TestSaramaZSTD(t *testing.T) {
 
 	select {
 	case <-producer.Successes():
-		fmt.Println("TEST:   sending message was successful")
+		Logger.Println("TEST:   sending compressed zstd message was successful")
 	case err := <-producer.Errors():
 		t.Errorf("TEST:   sending message failed: %v\n", err.Err)
 	}

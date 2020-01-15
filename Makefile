@@ -16,10 +16,6 @@ test:
 
 GOLINT := $(shell command -v golint)
 
-.PHONY: testzstd
-testzstd:
-	go test -run TestSaramaZSTD
-
 .PHONY: lint
 lint:
 ifndef GOLINT
