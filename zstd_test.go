@@ -11,7 +11,6 @@ func TestSaramaZSTD(t *testing.T) {
 	kafkaVersion := V2_1_0_0
 	Logger = log.New(os.Stdout, "", 0)
 
-	Logger.Println(">>> kafka version", kafkaVersion)
 	cfg := NewConfig()
 
 	cfg.ClientID = "sarama-zstd-test"

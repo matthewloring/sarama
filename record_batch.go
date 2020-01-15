@@ -83,25 +83,18 @@ func (b *RecordBatch) encode(pe packetEncoder) error {
 		return err
 	}
 
-	Logger.Println(">>> record_batch.go on encode")
 	if b.compressedRecords == nil {
 		if err := b.encodeRecords(pe); err != nil {
-			Logger.Println(">>> record_batch.go on encode, error on encodeRecords", err)
 			return err
 		}
 	}
-	Logger.Println(">>> record_batch.go put raw bytes on encode")
 	if err := pe.putRawBytes(b.compressedRecords); err != nil {
-		Logger.Println(">>> record_batch.go err put raw bytes on encode", err)
 		return err
 	}
 
-	Logger.Println(">>> record_batch.go pe.pop on encode")
 	if err := pe.pop(); err != nil {
-		Logger.Println(">>> record_batch.go err pe.pop on encode", err)
 		return err
 	} else {
-		Logger.Println(">>> record_batch.go NO err pe.pop on encode")
 	}
 	return pe.pop()
 }
@@ -206,17 +199,13 @@ func (b *RecordBatch) encodeRecords(pe packetEncoder) error {
 	var raw []byte
 	var err error
 	if raw, err = encode(recordsArray(b.Records), pe.metricRegistry()); err != nil {
-		Logger.Println(">>> record_batch.go/encodeRecords() err encode message on encodeRecords", err)
 		return err
 	}
 	b.recordsLen = len(raw)
 
-	Logger.Println(">>> record_batch.go/encodeRecords() compressing message on encodeRecords")
 	b.compressedRecords, err = compress(b.Codec, b.CompressionLevel, raw)
 	if err != nil {
-		Logger.Println(">>> record_batch.go/encodeRecords() err compressing message on encodeRecords", err)
 	} else {
-		Logger.Println(">>> record_batch.go/encodeRecords() NO err compressing message on encodeRecords")
 	}
 	return err
 }

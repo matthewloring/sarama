@@ -149,7 +149,6 @@ func (r *FetchRequest) requiredVersion() KafkaVersion {
 	case 4:
 		return V0_11_0_0
 	case 7:
-		Logger.Println(">>> fetch_request.go requiredVersion")
 		return V2_1_0_0
 	default:
 		return MinVersion
