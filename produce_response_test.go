@@ -58,7 +58,7 @@ var (
 			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, // Offset 255
 			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0xE8, // Timestamp January 1st 0001 at 00:00:01,000 UTC (LogAppendTime was used)
 
-			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, // StartOffset 0
+			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x32, // StartOffset 50
 			0x00, 0x00, 0x00, 0x64, // 100 ms throttle time
 		},
 	}
@@ -102,6 +102,11 @@ func TestProduceResponseDecode(t *testing.T) {
 				t.Error("Failed decoding produced throttle time, expected:", expected, ", got:", response.ThrottleTime)
 			}
 		}
+		if v >= 7 {
+			if response.StartOffset != 50 {
+				t.Error("Decoding failed for StartOffset, got:", response.StartOffset)
+			}
+		}
 	}
 }
 
@@ -116,6 +121,7 @@ func TestProduceResponseEncode(t *testing.T) {
 		Offset:    255,
 		Timestamp: time.Unix(1, 0),
 	}
+	response.StartOffset = 50
 	response.ThrottleTime = 100 * time.Millisecond
 	for v, produceResponseManyBlocks := range produceResponseManyBlocksVersions {
 		response.Version = int16(v)

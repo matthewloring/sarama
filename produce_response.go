@@ -137,6 +137,10 @@ func (r *ProduceResponse) encode(pe packetEncoder) error {
 			}
 		}
 	}
+	if r.Version >= 5 {
+		pe.putInt64(r.StartOffset)
+	}
+
 	if r.Version >= 1 {
 		pe.putInt32(int32(r.ThrottleTime / time.Millisecond))
 	}
