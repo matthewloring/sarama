@@ -1,5 +1,15 @@
 # Changelog
 
+
+#### Unreleased
+
+Improvements:
+- Enabled producing with zstd compression
+  ([1574](https://github.com/Shopify/sarama/pull/1574))
+
+Known Issues:
+- Consuming zstd topics doesn't work right now
+
 #### Version 1.25.0 (2020-01-13)
 
 New Features:
